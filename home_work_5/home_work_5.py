@@ -4,7 +4,7 @@
 у порядку зростання.
 """
 
-n = 10
+n = int(input('Input integer: '))
 
 for num in range(1,n+1):
 
