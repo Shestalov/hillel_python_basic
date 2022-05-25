@@ -4,7 +4,7 @@
 Операцією зведення на ступінь користуватися не можна!
 """
 
-n = int(input('Input integer: '))
+n = int(input('Input natural number: '))
 
 for num in range(1, n + 1):
 
