@@ -16,15 +16,14 @@ for num in range(len(pupils_height)):
 
     # from 0 to the last num (exclusively)
     if pupils_height[num] < petro:
-        pupils_height.insert(num, f"Petro is here")
-        print(f"Petro is {num+1} in the line.")
+        pupils_height.insert(num, "Petro is here")  # for visualisation
+        print(f"Petro is {num + 1} in the line.")
         break
 
     # for last num
-    elif num == len(pupils_height)-1:
-        pupils_height.append("Petro is the last")
-        print("Petro is: ", len(pupils_height))
+    elif num == len(pupils_height) - 1:
+        pupils_height.append("Petro is the last")  # for visualisation
+        print(f"Petro is {len(pupils_height)} in the line.")
 
 # show where is Petro in the line
 print(f"The line of the pupils with Petro: \n{pupils_height}")
-
