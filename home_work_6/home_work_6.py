@@ -13,7 +13,7 @@
 counter = 0
 sum_attempts = 0
 max_attempt = 0
-min_attempt = 100
+min_attempt = 101
 odd = 0
 even = 0
 
@@ -28,10 +28,6 @@ while True:
     # check max integer
     if ask > max_attempt:
         max_attempt = ask
-
-    # if ask will be more 100
-    if ask > min_attempt:
-        min_attempt += ask
 
     # check min integer
     if ask < min_attempt and ask != 0:
