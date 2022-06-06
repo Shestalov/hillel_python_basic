@@ -8,4 +8,6 @@ def square(square_side):
     return square_side * 4, square_side * square_side, square_side * (2 ** 0.5)
 
 
-print(square(16))
+res = square(16)
+print(res)
+print(type(res))
