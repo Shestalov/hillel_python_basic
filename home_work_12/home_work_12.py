@@ -1,14 +1,24 @@
 set_1 = {1, 2, 3, 4}
-set_2 = {2, 3, 4, 5}
+set_2 = {1, 2, 3}
 
-i = set_1 & set_2
-
-if i == set_1 == set_2:
-    print("set 1 is a superset for set 2 and vice versa.")
-elif i == set_1:
-    print("set 2 is a superset for set 1")
-elif i == set_2:
-    print("set 1 is a superset for set 2")
+# only if else
+if set_1 >= set_2:
+    print("True")
 else:
     print("False")
 
+
+# function
+def superset(first_set, second_set):
+    if first_set >= second_set:
+        return True
+    else:
+        return False
+
+
+my_func = superset(set_1, set_2)
+print(my_func)
+
+
+# checking (set_1 is a superset for set_2)
+print(set_1.issuperset(set_2))
