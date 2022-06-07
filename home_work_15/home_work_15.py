@@ -1,4 +1,4 @@
-def arithmetic(num_1, num_2, operations=None):
+def arithmetic(num_1, num_2, operations):
     """
     Given two integers and operation on them, return the result according to the operation.
 
@@ -19,5 +19,5 @@ def arithmetic(num_1, num_2, operations=None):
         return operators.get(operations)(num_1, num_2)
 
 
-res = arithmetic(2, 3, "+")
+res = arithmetic(2, 3, "&")
 print(res)
