@@ -4,6 +4,7 @@ logs = {"qwe": "123"}
 def decorator(func):
     def wrapper(name, pas):
         return check_password(name, pas)
+
     return wrapper
 
 
