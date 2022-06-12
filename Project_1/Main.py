@@ -5,11 +5,11 @@ def third():
     pass
 
 
-def login(name):
+def login(name: str) -> bool:
     return name in logs
 
 
-def check_password(name, pas):
+def check_password(name: str, pas: str) -> bool:
     return logs.get(name) == pas
 
 
