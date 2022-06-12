@@ -5,6 +5,9 @@ def decorator(func):
     def wrapper(name, pas):
         if check_password(name, pas):
             return func(name, pas)
+        else:
+            return False
+
     return wrapper
 
 
@@ -35,3 +38,5 @@ if __name__ == '__main__':
         else:
             print("Login or password is wrong.")
             counter -= 1
+    else:
+        print("Attempts expired")
