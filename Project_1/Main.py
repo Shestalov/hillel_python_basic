@@ -1,12 +1,15 @@
 logs = {"qwe": "123"}
 
 
-def third():
-    pass
+def decorator(func):
+    def wrapper(name, pas):
+        return check_password(name, pas)
+    return wrapper
 
 
-def login(name: str) -> bool:
-    return name in logs
+@decorator
+def login(name: str, pas: str) -> bool:
+    return True  # name in logs
 
 
 def check_password(name: str, pas: str) -> bool:
@@ -23,10 +26,9 @@ if __name__ == '__main__':
         username = input("Username: ")
         password = input("Password: ")
 
-        log = login(username)
-        check = check_password(username, password)
+        log = login(username, password)
 
-        if check and log is True:
+        if log is True:
             print("You are in the system!")
             break
         else:
