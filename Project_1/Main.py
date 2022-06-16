@@ -54,9 +54,9 @@ if __name__ == '__main__':
             elif parse().password is None:
                 password = input("Password: ")
 
-        else:
-            username = input("Username: ")
-            password = input("Password: ")
+            else:
+                username = input("Username: ")
+                password = input("Password: ")
 
     else:
         print("Attempts expired")
