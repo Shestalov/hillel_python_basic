@@ -5,9 +5,10 @@ logs = {"qwe": "123"}
 
 def parse():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--username')
-    parser.add_argument('--password')
+    parser.add_argument('-u', '--username', type=str, help='username')
+    parser.add_argument('-p', '--password', type=str, help='password')
     return parser.parse_args()
+
 
 def decorator(func):
     def wrapper(name: str, pas: str) -> bool:
@@ -21,7 +22,7 @@ def decorator(func):
 
 @decorator
 def login(name: str, pas: str) -> bool:
-    return True  # name in logs
+    return True
 
 
 def check_password(name: str, pas: str) -> bool:
@@ -31,30 +32,31 @@ def check_password(name: str, pas: str) -> bool:
 if __name__ == '__main__':
 
     counter = 3
-    while counter >= 1:
+    print(f"You have {counter} attempts.")
 
-        args = parse()
-        if login(args.username, args.password):
-            log = login(args.username, args.password)
-        elif args.username:
-            print(f"You have {counter} attempts.")
-            password = input("Password: ")
-            log = login(args.username, password)
-        elif args.password:
-            print(f"You have {counter} attempts.")
-            username = input("Username: ")
-            log = login(username, args.password)
-        else:
-            print(f"You have {counter} attempts.")
-            username = input("Username: ")
-            password = input("Password: ")
-            log = login(username, password)
+    username = parse().username or input("Username: ")
+    password = parse().password or input("Password: ")
 
-        if log is True:
+    while counter > 1:
+
+        if login(username, password) is True:
             print("You are in the system!")
             break
-        else:
-            print("Login or password is wrong.")
+
+        elif login(username, password) is False:
+            print("Login or password is WRONG.")
             counter -= 1
+            print(f"You have {counter} attempts.")
+
+            if parse().username is None:
+                username = input("Username: ")
+
+            elif parse().password is None:
+                password = input("Password: ")
+
+        else:
+            username = input("Username: ")
+            password = input("Password: ")
+
     else:
         print("Attempts expired")
