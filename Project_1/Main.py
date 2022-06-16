@@ -51,7 +51,7 @@ if __name__ == '__main__':
             if parse().username is None:
                 username = input("Username: ")
 
-            elif parse().password is None:
+            if parse().password is None:
                 password = input("Password: ")
 
             else:
