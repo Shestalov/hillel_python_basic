@@ -1,7 +1,7 @@
 import argparse
 import datetime
 
-logs = {"qwe": "123", 'time': "2022-06-21 21:00:00:997317"}
+logs = {"qwe": "123", 'time': "2022-06-21 23:00:00:997317"}
 
 
 def parse():
@@ -12,9 +12,9 @@ def parse():
 
 
 def decorator(func):
-    def wrapper(user_name: str, user_password: str) -> bool:
-        if check_password(user_name, user_password):
-            return func(user_name, user_password) #func(*args, **kwargs)
+    def wrapper(user_name: str, user_password: str, now: str, last: str) -> bool:
+        if check_password(user_name, user_password) and not block(now, last):
+            return func(user_name, user_password, now, last)
         else:
             return False
 
@@ -22,7 +22,7 @@ def decorator(func):
 
 
 @decorator
-def login(user_name: str, user_password: str) -> bool: #*args, **kwargs
+def login(user_name: str, user_password: str, now: str, last: str) -> bool:
     return True
 
 
@@ -58,11 +58,11 @@ if __name__ == '__main__':
 
             while counter > 1:
 
-                if login(username, password) is True:
+                if login(username, password, now_time, last_time) is True:
                     print("You are in the system!")
                     break
 
-                elif login(username, password) is False:
+                elif login(username, password, now_time, last_time) is False:
                     print("Login or password is WRONG.")
                     counter -= 1
                     print(f"You have {counter} attempts.")
