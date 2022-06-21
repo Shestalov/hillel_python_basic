@@ -1,7 +1,7 @@
 import argparse
 import datetime
 
-logs = {"qwe": "123", 'time': datetime.datetime(2022, 6, 20, 23, 25, 0, 153718)}
+logs = {"qwe": "123", 'time': "2022-06-21 21:00:00:997317"}
 
 
 def parse():
@@ -12,9 +12,9 @@ def parse():
 
 
 def decorator(func):
-    def wrapper(name: str, pas: str) -> bool:
-        if check_password(name, pas):
-            return func(name, pas)
+    def wrapper(user_name: str, user_password: str) -> bool:
+        if check_password(user_name, user_password):
+            return func(user_name, user_password) #func(*args, **kwargs)
         else:
             return False
 
@@ -22,27 +22,32 @@ def decorator(func):
 
 
 @decorator
-def login(name: str, pas: str) -> bool:
+def login(user_name: str, user_password: str) -> bool: #*args, **kwargs
     return True
 
 
-def check_password(name: str, pas: str) -> bool:
-    return logs.get(name) == pas
+def check_password(user_name: str, user_password: str) -> bool:
+    return logs.get(user_name) == user_password
 
 
-def block() -> bool:
-    if datetime.datetime.now() > logs["time"] + datetime.timedelta(seconds=60):
-        return True
-    else:
-        print("You are blocked! Try after ", (logs["time"] + datetime.timedelta(seconds=60)).strftime("%H:%M:%S"))
+def block(now: str, last: str) -> bool:
+    if datetime.datetime.strptime(now, "%Y-%m-%d %H:%M:%S:%f") > \
+            (datetime.datetime.strptime(last, "%Y-%m-%d %H:%M:%S:%f") + datetime.timedelta(seconds=60 * 5)):
         return False
+    else:
+        print("You are blocked! Try after ",
+              datetime.datetime.strptime(last, "%Y-%m-%d %H:%M:%S:%f") + datetime.timedelta(seconds=60 * 5))
+        return True
 
 
 if __name__ == '__main__':
 
     while True:
 
-        if not block():
+        now_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f")
+        last_time = logs["time"]
+
+        if block(now_time, last_time) is True:
             break
 
         else:
@@ -75,6 +80,5 @@ if __name__ == '__main__':
             else:
                 print("Attempts expired")
                 print("You are blocked for 5 min.")
-                # logs["time"] = datetime.datetime.now()
 
         break
