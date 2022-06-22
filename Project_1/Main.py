@@ -1,7 +1,7 @@
 import argparse
 import datetime
 
-logs = {"qwe": "123", 'time': "2022-06-21 23:10:00:997317"}
+logs = {"qwe": "123", 'time': "2022-06-22 16:10:00:997317"}
 
 
 def parse():
@@ -14,7 +14,7 @@ def parse():
 def decorator(func):
     def wrapper(user_name: str, user_password: str, now: str, last: str) -> bool:
         if check_password(user_name, user_password) and not block(now, last):
-            return func(user_name, user_password)
+            return func(user_name, user_password, now, last)
         else:
             return False
 
@@ -42,43 +42,35 @@ def block(now: str, last: str) -> bool:
 
 if __name__ == '__main__':
 
-    while True:
+    now_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f")
+    last_time = logs["time"]
 
-        now_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f")
-        last_time = logs["time"]
+    counter = 4
 
-        if block(now_time, last_time) is True:
+    username = parse().username or input("Username: ")
+    password = parse().password or input("Password: ")
+
+    while counter > 1:
+
+        if login(username, password, now_time, last_time) is True:
+            print("You are in the system!")
             break
 
-        else:
-            counter = 4
+        elif login(username, password, now_time, last_time) is False:
+            print("Login or password is WRONG.")
+            counter -= 1
+            print(f"You have {counter} attempts.")
 
-            username = parse().username or input("Username: ")
-            password = parse().password or input("Password: ")
+            if parse().username is None:
+                username = input("Username: ")
 
-            while counter > 1:
-
-                if login(username, password, now_time, last_time) is True:
-                    print("You are in the system!")
-                    break
-
-                elif login(username, password, now_time, last_time) is False:
-                    print("Login or password is WRONG.")
-                    counter -= 1
-                    print(f"You have {counter} attempts.")
-
-                    if parse().username is None:
-                        username = input("Username: ")
-
-                    if parse().password is None:
-                        password = input("Password: ")
-
-                    else:
-                        username = input("Username: ")
-                        password = input("Password: ")
+            if parse().password is None:
+                password = input("Password: ")
 
             else:
-                print("Attempts expired")
-                print("You are blocked for 5 min.")
+                username = input("Username: ")
+                password = input("Password: ")
 
-        break
+    else:
+        print("Attempts expired")
+        print("You are blocked for 5 min.")
