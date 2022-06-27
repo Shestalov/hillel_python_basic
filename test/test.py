@@ -1,7 +1,11 @@
 import argparse
 import datetime
 
-logs = {"qwe": "123", 'time': "2022-06-21 23:00:00:997317"}
+logs = {"qwe": "123", 'time': "2022-06-27 19:10:00:997317"}
+
+
+class UserDoesNotExist(Exception):
+    pass
 
 
 def parse():
@@ -12,73 +16,71 @@ def parse():
 
 
 def decorator(func):
-    def wrapper(user_name: str, user_password: str, now: str, last: str) -> bool:
-        if check_password(user_name, user_password) and not block(now, last):
-            return func(user_name, user_password, now, last)
-        else:
+    def wrapper(user_name: str, user_password: str, time_now: str) -> bool:
+
+        try:
+            if not check_password(user_name, user_password):
+                print("Wrong password")
+                return False
+        except UserDoesNotExist as a:
+            print(a)
             return False
+
+        if not is_block(time_now):
+            print("Wrong time")
+            return False
+
+        return func(user_name, user_password, time_now)
 
     return wrapper
 
 
 @decorator
-def login(user_name: str, user_password: str, now: str, last: str) -> bool:
+def login(user_name: str, user_password: str, time_now: str) -> bool:
     return True
 
 
 def check_password(user_name: str, user_password: str) -> bool:
-    return logs.get(user_name) == user_password
-
-
-def block(now: str, last: str) -> bool:
-    if datetime.datetime.strptime(now, "%Y-%m-%d %H:%M:%S:%f") > \
-            (datetime.datetime.strptime(last, "%Y-%m-%d %H:%M:%S:%f") + datetime.timedelta(seconds=60 * 5)):
-        return False
+    if user_name not in logs:
+        raise UserDoesNotExist("Wrong User Name")
     else:
-        print("You are blocked! Try after ",
-              datetime.datetime.strptime(last, "%Y-%m-%d %H:%M:%S:%f") + datetime.timedelta(seconds=60 * 5))
-        return True
+        return logs.get(user_name) == user_password
+
+
+def is_block(time_now: str) -> bool:
+    last_time = logs["time"]
+    return last_time > time_now
 
 
 if __name__ == '__main__':
 
-    while True:
+    now_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f")
 
-        now_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f")
-        last_time = logs["time"]
+    counter = 4
 
-        if block(now_time, last_time) is True:
+    username = parse().username or input("Username: ")
+    password = parse().password or input("Password: ")
+
+    while counter > 1:
+
+        if login(username, password, now_time) is True:
+            print("You are in the system!")
             break
 
-        else:
-            counter = 4
+        elif login(username, password, now_time) is False:
+            counter -= 1
+            print(f"You have {counter} attempts.")
 
-            username = parse().username or input("Username: ")
-            password = parse().password or input("Password: ")
+            if parse().username is None:
+                username = input("Username: ")
 
-            while counter > 1:
-
-                if login(username, password, now_time, last_time) is True:
-                    print("You are in the system!")
-                    break
-
-                elif login(username, password, now_time, last_time) is False:
-                    print("Login or password is WRONG.")
-                    counter -= 1
-                    print(f"You have {counter} attempts.")
-
-                    if parse().username is None:
-                        username = input("Username: ")
-
-                    if parse().password is None:
-                        password = input("Password: ")
-
-                    else:
-                        username = input("Username: ")
-                        password = input("Password: ")
+            if parse().password is None:
+                password = input("Password: ")
 
             else:
-                print("Attempts expired")
-                print("You are blocked for 5 min.")
+                username = input("Username: ")
+                password = input("Password: ")
 
-        break
+    else:
+        print("Attempts expired")
+        print("You are blocked for 5 min.")
