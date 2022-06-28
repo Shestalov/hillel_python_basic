@@ -1,7 +1,7 @@
 import argparse
 import datetime
 
-logs = {"qwe": "123", 'time': "2022-06-28 19:10:00:997317"}
+logs = {"qwe": "123", 'time': "2022-06-29 19:10:00:997317"}
 
 
 class UserDoesNotExist(Exception):
@@ -27,7 +27,8 @@ def decorator(func):
             return False
 
         if not is_block(time_now):
-            print("Wrong time")
+            print("You are blocked, nest try: ",
+                  datetime.datetime.strptime(logs["time"], "%Y-%m-%d %H:%M:%S:%f") + datetime.timedelta(seconds=60*5))
             return False
 
         return func(user_name, user_password, time_now)
@@ -56,12 +57,12 @@ if __name__ == '__main__':
 
     now_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f")
 
-    counter = 4
+    counter = 3
 
     username = parse().username or input("Username: ")
     password = parse().password or input("Password: ")
 
-    while counter >= 1:
+    while counter > 1:
 
         if login(username, password, now_time) is True:
             print("You are in the system!")
@@ -70,6 +71,7 @@ if __name__ == '__main__':
         else:
             counter -= 1
             print(f"You have {counter} attempts.")
+
 
             if parse().username is None:
                 username = input("Username: ")
