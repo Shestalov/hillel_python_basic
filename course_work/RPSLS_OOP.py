@@ -7,28 +7,29 @@ ITEMS = {"rock": ["lizard", "scissors"],
          "paper": ["rock", "spock"]}
 
 
-class Choice:
+class Player:
 
-    def __init__(self, items: dict):
-        self.items = items
+    def __init__(self):
+        self.choice = None
 
-    def ask_choice(self) -> str:
+    def ask_choice(self):
         while True:
-            choice = input("Your choice (rock paper scissors lizard spock)?: ")
-            if choice not in self.items.keys():
+            self.choice = input("Your choice (rock paper scissors lizard spock)?: ")
+            if self.choice not in ITEMS.keys():
                 print("Invalid input")
             else:
                 break
-        return choice
+        return self.choice
 
-    def random_choice(self) -> str:
-        return random.choice(list(self.items.keys()))
+    def random_choice(self):
+        self.choice = random.choice(list(ITEMS.keys()))
+        return self.choice
 
 
-def find_winner(player: str, computer: str, items_dict: dict) -> str:
-    if computer in items_dict[player]:
+def find_winner(player_item, computer_item):
+    if computer_item in ITEMS[player_item]:
         return "Player wins!"
-    elif computer == player:
+    elif computer_item == player_item:
         return "Tie!"
     else:
         return "Computer wins!"
@@ -36,21 +37,23 @@ def find_winner(player: str, computer: str, items_dict: dict) -> str:
 
 if __name__ == '__main__':
 
-    player = Choice(ITEMS)  # ?
+    # create instance's player and computer
+    player = Player()
+    computer = Player()
 
     game = True
     while game:
 
         # ask player his choice
-        player_choice = player.ask_choice()  # ?
+        player_choice = player.ask_choice()
         print("Players:", player_choice)
 
         # make random computer choice
-        computer_choice = Choice(ITEMS).random_choice()  # ?
+        computer_choice = computer.random_choice()
         print("Computer:", computer_choice)
 
         # find and print winner
-        print(find_winner(player_choice, computer_choice, ITEMS))
+        print(find_winner(player_choice, computer_choice))
 
         # ask repeat game
         while True:
