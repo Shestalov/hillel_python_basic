@@ -10,58 +10,60 @@ ITEMS = {"rock": ["lizard", "scissors"],
 class Player:
 
     def __init__(self):
-        self.choice = None
+        self._manual_choice = None
+        self._random_choice = None
+        self._result = None
 
-    def ask_choice(self):
+    def manual_choice(self):
         while True:
-            self.choice = input("Your choice (rock paper scissors lizard spock)?: ")
-            if self.choice not in ITEMS.keys():
+            self._manual_choice = input("Your choice (rock paper scissors lizard spock)?: ")
+            if self._manual_choice not in ITEMS.keys():
                 print("Invalid input")
             else:
                 break
-        return self.choice
+        return self._manual_choice
 
+# class Computer(Player):
     def random_choice(self):
-        self.choice = random.choice(list(ITEMS.keys()))
-        return self.choice
+        self._random_choice = random.choice(list(ITEMS.keys()))
+        return self._random_choice
 
+    def find_winner(self):
+        if self._random_choice in ITEMS[self._manual_choice]:
+            self._result = "Player wins!"
+        elif self._random_choice == self._manual_choice:
+            self._result = "Tie!"
+        else:
+            self._result = "Computer wins!"
 
-def find_winner(player_item, computer_item):
-    if computer_item in ITEMS[player_item]:
-        return "Player wins!"
-    elif computer_item == player_item:
-        return "Tie!"
-    else:
-        return "Computer wins!"
+    def run(self):
+
+        game = True
+        while game:
+
+            # ask player his choice
+            self.manual_choice()
+            print("Player: ", self._manual_choice)
+
+            # make random computer choice
+            self.random_choice()
+            print("Computer:", self._random_choice)
+
+            # find and print winner
+            self.find_winner()
+            print(self._result)
+
+            # ask repeat game
+            while True:
+                repeat = input("Repeat (Y/N)?: ").lower()
+                if repeat == "y":
+                    break
+                elif repeat == "n":
+                    game = False
+                    break
+                else:
+                    print("Invalid input")
 
 
 if __name__ == '__main__':
-
-    # create instance's player and computer
-    player = Player()
-    computer = Player()
-
-    game = True
-    while game:
-
-        # ask player his choice
-        player_choice = player.ask_choice()
-        print("Players:", player_choice)
-
-        # make random computer choice
-        computer_choice = computer.random_choice()
-        print("Computer:", computer_choice)
-
-        # find and print winner
-        print(find_winner(player_choice, computer_choice))
-
-        # ask repeat game
-        while True:
-            repeat = input("Repeat (Y/N)?: ").lower()
-            if repeat == "y":
-                break
-            elif repeat == "n":
-                game = False
-                break
-            else:
-                print("Invalid input")
+    Player().run()
