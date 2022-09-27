@@ -57,5 +57,3 @@
 - Magic methods
 - Data hiding
 - Creating a UML diagram
-
-
