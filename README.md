@@ -61,4 +61,4 @@
 - Data hiding
 - Creating a UML diagram
 
-Python Basic course from it school Hillel - https://ithillel.ua/courses/introduction-python
+Python Basic course from [Hillel IT School](https://ithillel.ua/courses/introduction-python).
