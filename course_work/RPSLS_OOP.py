@@ -23,7 +23,7 @@ class Player:
                 break
         return self._manual_choice
 
-# class Computer(Player):
+
     def random_choice(self):
         self._random_choice = random.choice(list(ITEMS.keys()))
         return self._random_choice
